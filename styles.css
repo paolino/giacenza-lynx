@@ -1,0 +1,6 @@
+/* giacenza-lynx — compiled into main.lynx.bundle as Lynx global cssId 0.
+   The app styles its nodes inline (Miso.CSS style_), so this sheet only
+   carries a base text color for the page. */
+page {
+  color: #e2e8f0;
+}
