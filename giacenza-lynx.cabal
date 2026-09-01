@@ -1,0 +1,75 @@
+cabal-version:      3.0
+name:               giacenza-lynx
+version:            0.1.0.0
+synopsis:           Giacenza average-balance calculator as a miso-native LynxJS bundle
+description:        Third giacenza prototype: one Haskell domain source (copied
+                    from paolino/giacenza-miso), a miso-native dual-thread UI,
+                    and a LynxJS bundle (main.lynx.bundle) built with miso's
+                    ghcNative + mkLynxBundle machinery.
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             paolino
+maintainer:         paolino@lambdasistemi.it
+copyright:          2026 paolino
+category:           Finance
+build-type:         Simple
+extra-doc-files:    README.md
+
+common warnings
+  ghc-options:
+    -Wall
+    -Wunused-imports
+    -Wunused-packages
+    -Wmissing-export-lists
+    -Wname-shadowing
+    -Wdeferred-out-of-scope-variables
+    -Wpartial-type-signatures
+    -Wredundant-constraints
+  default-language: GHC2021
+
+library
+  import:             warnings
+  exposed-modules:
+    Giacenza.Compute
+    Giacenza.Parse
+    Giacenza.Types
+  hs-source-dirs:     src
+  build-depends:
+    , base < 5
+    , containers < 0.9
+    , text < 2.3
+    , time < 1.16
+
+executable giacenza-lynx
+  import:             warnings
+  main-is:            Main.hs
+  hs-source-dirs:     app
+  build-depends:
+    , base < 5
+    , containers < 0.9
+    , giacenza-lynx
+    , miso >= 1.9 && < 2
+  default-language:   GHC2021
+  if arch(javascript)
+    ld-options:
+      -sENVIRONMENT=shell -sWASM=0 -sEXPORTED_RUNTIME_METHODS=HEAP8
+  if !arch(wasm32) && !arch(javascript)
+    ghc-options:
+      -O0
+
+test-suite unit
+  import:             warnings
+  type:               exitcode-stdio-1.0
+  main-is:            Main.hs
+  other-modules:
+    Giacenza.ComputeSpec
+    Giacenza.ParseSpec
+  hs-source-dirs:     test
+  build-depends:
+    , base < 5
+    , containers < 0.9
+    , giacenza-lynx
+    , hspec < 2.13
+    , QuickCheck < 2.16
+    , text < 2.3
+    , time < 1.16
