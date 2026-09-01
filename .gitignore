@@ -1,0 +1,8 @@
+/gate.sh
+dist-newstyle/
+result
+result-*
+.orch/
+.direnv/
+*.hi
+*.o
