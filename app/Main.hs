@@ -220,7 +220,7 @@ pasteArea value =
     textarea_
         [ id_ "paste-area"
         , placeholder_ "paste a CSV with date and amount columns"
-        , TaE.onInput (CsvInputChanged . TaE.textareaValue)
+        , on "input" TaE.textareaValueDecoder (\e _ _ -> CsvInputChanged e)
         , CSS.style_
             [ CSS.height "120px"
             , CSS.width "100%"
